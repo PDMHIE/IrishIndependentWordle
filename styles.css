@@ -9,6 +9,7 @@ body {
     background-color: white;
     display: flex;
     flex-direction: column;
+    align-items: center;
     min-height: 100vh;
     margin: 0;
     padding: 1em;
@@ -17,6 +18,27 @@ body {
 
 svg {
     pointer-events: none;
+}
+
+a {
+    font-weight: bold;
+    color: black;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
 }
 
 .header {
@@ -49,6 +71,118 @@ svg {
     margin: .5em auto 0;
     height: 2px;
     background: hsl(209, 7%, 78%);
+}
+
+.play {
+    width: 9em;
+    height: 2.1em;
+    background: black;
+    border: none;
+    border-radius: .25em;
+    font-weight: bold;
+    font-size: 1.1em;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    margin-top: 2em;
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 1.35em;
+    margin-bottom: -0.5em;
+}
+
+h2 {
+    font-weight: bold;
+    font-size: 1em;
+    margin-bottom: -0.5em;
+}
+
+h3 {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    font-size: 1.35em;
+    margin-bottom: -0.5em;
+}
+
+h4 {
+    margin-bottom: -.5em;
+}
+
+.box {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 18.5em;
+}
+
+.box.left {
+    justify-content: left;
+}
+
+.box.right {
+    justify-content: right;
+}
+
+.statistic {
+    display: inline;
+    border-color: black;
+    width: auto;
+    height: auto;
+    grid-column: span 1;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.statistic.large{
+    grid-column: span 2;
+}
+
+.stats-grid {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: repeat(3, 6em);
+    grid-template-rows: repeat(2, 5em);
+    gap: .5em;
+    margin-bottom: .5em;
+    margin-top: .5em;
+}
+
+.stat-bar-grid {
+    display: grid;
+    grid-template-rows: repeat(6, 1em);
+    gap: 0.5em;
+    margin-bottom: .5em;
+    margin-top: .6em;
+}
+
+.stat-bar {
+    width: var(--width, 20em);
+    height: auto;
+    background: hsl(0, 0%, 50%);
+    text-align: right;
+    font-weight: bold;
+    margin-top: 1.4em;
+    color: white;
+}
+
+.stat-bar.last {
+    background: hsl(178, 100%, 19%);
+}
+
+.text-box {
+    margin-top: 2em;
+    margin-bottom: 2em;
+    width: 21em;
+    height: auto;
+    font-size: .9em;
+}
+
+.text-box.small {
+    width: 10em;
 }
 
 .keyboard {
@@ -120,7 +254,6 @@ svg {
     display: grid;
     justify-content: center;
     align-content: center;
-    flex-grow: 1;
     grid-template-columns: repeat(5, 3.5em);
     grid-template-rows: repeat(6, 3.5em);
     gap: .25em;
@@ -139,6 +272,12 @@ svg {
     align-items: center;
     user-select: none;
     transition: transform 250ms linear;
+}
+
+.tile.dummy {
+    width: 1.75em;
+    height: 1.75em;
+    margin-right: 1.5em;
 }
 
 .tile[data-state="next"]{

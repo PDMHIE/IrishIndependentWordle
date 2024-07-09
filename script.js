@@ -58,6 +58,8 @@ function selectNextTile() {
     const activeTiles = getActiveTiles()
     if (activeTiles.length >= WORD_LENGTH) return
     const nextTile = guessGrid.querySelector(":not([data-letter])")
+    if (nextTile === null) return;
+    
     nextTile.dataset.state = "next"
 }
 
