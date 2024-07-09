@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: hsl(240, 3%, 7%);
+    background-color: white;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -19,9 +19,41 @@ svg {
     pointer-events: none;
 }
 
+.header {
+    display: inline-flex;
+    gap: 1em;
+    height: 1.5em;
+    justify-content: center;
+    align-items: center;
+}
+
+.focail {
+    height: 2em;
+    width: auto;
+}
+
+.badge {
+    height: 5em;
+    width: 5em;
+    user-select: none;
+}
+
+.icon {
+    height: 1.5em;
+    margin-top: 50%;
+    user-select: none;
+}
+
+.underline {
+    width: 19em;
+    margin: .5em auto 0;
+    height: 2px;
+    background: hsl(209, 7%, 78%);
+}
+
 .keyboard {
     display: grid;
-    grid-template-columns: repeat(20, minmax(auto, 1.25em));
+    grid-template-columns: repeat(20, minmax(auto, .75em));
     grid-auto-rows: 3em;
     gap: .25em;
     justify-content: center;
@@ -29,6 +61,7 @@ svg {
 
 .key {
     font-size: inherit;
+    font-weight: bold;
     grid-column: span 2;
     border: none;
     padding: 0;
@@ -36,12 +69,12 @@ svg {
     justify-content: center;
     align-items: center;
     background-color: hsl(
-        var(--hue, 200),
-        var(--saturation, 1%),
-        calc(var(--lightness-offset, 0% ) + var(--lightness, 51%))
+        var(--hue, 209),
+        var(--saturation, 7%),
+        calc(var(--lightness-offset, 0% ) + var(--lightness, 78%))
     );
-    color: white;
-    fill: white;
+    color: black;
+    fill: black;
     text-transform: uppercase;
     border-radius: .25em;
     cursor: pointer;
@@ -49,6 +82,7 @@ svg {
 }
 
 .key.large {
+    font-size: .6em;
     grid-column: span 3;
 }
 
@@ -62,19 +96,24 @@ svg {
 }
 
 .key.wrong {
-    --lightness: 23%
+    color: white;
+    --hue: 0;
+    --saturation: 0%;
+    --lightness: 50%;
 }
 
 .key.wrong-location{
-    --hue: 49;
-    --saturation: 51%;
-    --lightness: 47%;
+    color: white;
+    --hue: 9;
+    --saturation: 80%;
+    --lightness: 56%;
 }
 
 .key.correct {
-    --hue: 115;
-    --saturation: 29%;
-    --lightness: 43%;
+    color: white;
+    --hue: 178;
+    --saturation: 100%;
+    --lightness: 19%;
 }
 
 .guess-grid {
@@ -82,16 +121,17 @@ svg {
     justify-content: center;
     align-content: center;
     flex-grow: 1;
-    grid-template-columns: repeat(5, 4em);
-    grid-template-rows: repeat(6, 4em);
+    grid-template-columns: repeat(5, 3.5em);
+    grid-template-rows: repeat(6, 3.5em);
     gap: .25em;
-    margin-bottom: 1em;
+    margin-bottom: .5em;
+    margin-top: .5em;
 }
 
 .tile {
     font-size: 2em;
     color: white;
-    border: .05em solid hsl(240, 2%, 23%);
+    border: .05em solid black;
     text-transform: uppercase;
     font-weight: bold;
     display: flex;
@@ -101,23 +141,28 @@ svg {
     transition: transform 250ms linear;
 }
 
+.tile[data-state="next"]{
+    border: .05em dashed black;
+}
+
 .tile[data-state="active"]{
     border-color: hsl(200, 1%, 34%);
+    color: black;
 }
 
 .tile[data-state="wrong"] {
     border: none;
-    background-color: hsl(240, 2%, 23%);
+    background-color: hsl(0, 0%, 50%);
 }
 
 .tile[data-state="wrong-location"] {
     border: none;
-    background-color: hsl(49, 51%, 47%);
+    background-color: hsl(9, 80%, 56%);
 }
 
 .tile[data-state="correct"] {
     border: none;
-    background-color: hsl(115, 29%, 43%);
+    background-color: hsl(178, 100%, 19%);
 }
 
 .tile.shake {
