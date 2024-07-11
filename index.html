@@ -55,8 +55,7 @@
         </div>
     </div>
     <div id="game" class="page">
-        <div class="alert-container" data-alert-container>
-        </div>
+        <div class="alert-container" data-alert-container></div>
         <div class="centered">
             <div class="box left">
                 <div class="header">
@@ -148,6 +147,7 @@
         </div>
     </div>
     <div id="stats" class="page">
+        <div class="alert-container stats" data-stats-alert-container></div>
         <div class="box right">
             <a onclick="showLast()">X</a>
         </div>
@@ -215,7 +215,7 @@
             </div>
         </div>
         <div class="centered">
-            <button class="button share">
+            <button class="button share" onclick="pressShare()">
                 <div></div>
                 <div>Share</div>
                 <img src="share-icon.png" class="share-icon">

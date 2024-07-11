@@ -2,10 +2,17 @@ let englishDictionary
 let irishDictionary
 
 let targetWords
+let targetWordNumber
 let targetWord
-fetchJSON()
+
+fetchCSV()
 
 let lastPage
+let gameState = {
+    letters: [],
+    attempts: 0,
+    progress: "in-progress"
+}
 
 const WORD_LENGTH = 5
 const FLIP_ANIMATION_DURATION = 500
@@ -13,13 +20,16 @@ const DANCE_ANIMATION_DURATION = 500
 
 const languageBadge = document.querySelector("[data-language-badge]")
 const keyboard = document.querySelector("[data-keyboard]")
-const alertContainer = document.querySelector("[data-alert-container]")
 const guessGrid = document.querySelector("[data-guess-grid]")
 
-async function fetchJSON() {
+const alertContainer = document.querySelector("[data-alert-container]")
+const statsAlertContainer = document.querySelector("[data-stats-alert-container]")
+
+async function fetchCSV() {
     try {
-        const response1 = await fetch('targetWords.json');
-        targetWords = await response1.json();
+        const responseCSV = await fetch('Focail_Dictionary.csv');
+        const csvText = await responseCSV.text();
+        targetWords = parseCSV(csvText);
 
         const response2 = await fetch('englishDictionary.json');
         englishDictionary = await response2.json();
@@ -30,13 +40,31 @@ async function fetchJSON() {
         const offsetFromData = new Date(2022, 0, 1)
         const msOffset = Date.now() - offsetFromData
         const dayOffset = msOffset / 1000 / 60 / 60 / 24
-        const targetEntry = targetWords[Math.floor(dayOffset + 0) % targetWords.length];
-        targetWord = targetEntry.word
+        const targetIndex = Math.floor(dayOffset + 0) % targetWords.length
+        const targetEntry = targetWords[targetIndex];
+        targetWordNumber = targetEntry.Number
+        targetWord = targetEntry.Word.toLowerCase()
 
-        showBadge(targetEntry.tag)
+        showBadge(targetEntry.Status)
     } catch (error) {
         console.error('Error reading JSON file:', error);
     }
+}
+
+function parseCSV(csv) {
+    const lines = csv.split('\n');
+    const headers = lines[0].split(',');
+
+    const result = lines.slice(1).map(line => {
+        const values = line.split(',');
+        const obj = {};
+        headers.forEach((header, index) => {
+            obj[header.trim()] = values[index].trim();
+        });
+        return obj;
+    });
+
+    return result;
 }
 
 function startInteraction() {
@@ -140,7 +168,7 @@ function submitGuess() {
     }, "")
 
     // Could alternatively sort to only allow the use of irish words to guess the irish wordle, and english words to guess the english wordle
-    const targetWordsDictionary = targetWords.map(entry => entry.word) 
+    const targetWordsDictionary = targetWords.map(entry => entry.Word.toLowerCase()) 
     const validWord = englishDictionary.includes(guess) || irishDictionary.includes(guess) || targetWordsDictionary.includes(guess)
 
     if (!validWord) {
@@ -149,6 +177,7 @@ function submitGuess() {
         return
     }
 
+    gameState.attempts += 1
     stopInteraction()
     activeTiles.forEach((...params) => flipTile(...params, guess))
 }
@@ -165,12 +194,15 @@ function flipTile(tile, index, array, guess) {
         if (targetWord[index] === letter) {
             tile.dataset.state = "correct"
             key.classList.add("correct")
+            gameState.letters.push({letter: letter, state: "correct"})
         } else if (targetWord.includes(letter)) {
             tile.dataset.state = "wrong-location"
             key.classList.add("wrong-location")
+            gameState.letters.push({ letter: letter, state: "wrong-location" })
         } else {
             tile.dataset.state = "wrong"
             key.classList.add("wrong")
+            gameState.letters.push({ letter: letter, state: "wrong" })
         }
 
         if (index === array.length - 1) {
@@ -201,11 +233,32 @@ function showAlert(message, duration = 1000) {
     }, duration)
 }
 
+function showShareAlert(message, duration = 1000) {
+    const alerts = document.querySelectorAll('.alert')
+
+    alerts.forEach((alert) => {
+        alert.remove()
+    })
+
+    const alert = document.createElement("div")
+    alert.textContent = message
+    alert.classList.add("alert")
+
+    statsAlertContainer.append(alert)
+
+    setTimeout(() => {
+        alert.classList.add("hide")
+        alert.addEventListener("transitionend", () => {
+            alert.remove()
+        })
+    }, duration)
+}
+
 function showBadge(tag) {
     languageBadge.replaceChildren()
 
     const badge = document.createElement("img")
-    badge.src = tag === "irish" ? "irish-badge.svg" : "english-badge.svg"
+    badge.src = tag === "As gaeilge inniu" ? "irish-badge.svg" : "english-badge.svg"
     badge.classList.add("badge")
 
     languageBadge.appendChild(badge)
@@ -225,6 +278,7 @@ function checkWinLose(guess, tiles) {
         showAlert("You Win", 5000)
         danceTiles(tiles)
         stopInteraction()
+        gameState.progress = "won"
         return
     }
 
@@ -232,6 +286,7 @@ function checkWinLose(guess, tiles) {
     if (remainingTiles.length === 0) {
         showAlert(targetWord.toUpperCase(), null)
         stopInteraction();
+        gameState.progress = "lost"
     }
 }
 
@@ -260,7 +315,7 @@ function showPage(pageId) {
     stopInteraction()
 
     document.getElementById(pageId).classList.add('active')
-    if (pageId === "game") startInteraction()
+    if (pageId === "game" && gameState.progress === "in-progress") startInteraction()
     else if (pageId === "stats") {
         populateStatistics()
         populateDistribution()
@@ -283,7 +338,6 @@ function populateStatistics() {
 
 function populateDistribution() {
     const statBars = document.querySelectorAll('.stat-bar')
-    console.log(statBars.length)
 
     statBars.forEach((bar, index) => {
         bar.textContent = index
@@ -293,4 +347,34 @@ function populateDistribution() {
         if (index === 5) bar.classList.add('last')
         else bar.classList.remove('last')
     })
+}
+
+function pressShare() {
+    if (gameState.progress === "in-progress") {
+        showShareAlert("Complete the puzzle to share")
+        return
+    } 
+
+    let textToCopy = "Focail " + targetWordNumber + " " + gameState.attempts + "/6\n\n"
+
+    gameState.letters.forEach((tile, index) => {
+        switch (tile.state) {
+            case "wrong":
+                textToCopy += "⬛"
+                break;
+            case "wrong-location":
+                textToCopy += "🟨"
+                break;
+            case "correct":
+                textToCopy += "🟩"
+                break;
+        }
+
+        let letterNumber = index + 1
+        if (letterNumber % 5 === 0  && letterNumber != gameState.letters.length) textToCopy += "\n"
+    })
+
+    navigator.clipboard.writeText(textToCopy)
+
+    showShareAlert("Coppied to clipboard")
 }
