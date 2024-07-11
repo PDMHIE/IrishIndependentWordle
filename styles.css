@@ -23,6 +23,7 @@ svg {
 a {
     font-weight: bold;
     color: black;
+    cursor: pointer;
 }
 
 a:link {
@@ -41,6 +42,23 @@ a:active {
     text-decoration: none;
 }
 
+.page {
+    visibility: hidden;
+    position: absolute;
+}
+
+.page.active {
+    visibility: visible;
+    position: relative;
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
 .header {
     display: inline-flex;
     gap: 1em;
@@ -50,8 +68,19 @@ a:active {
 }
 
 .focail {
-    height: 2em;
-    width: auto;
+    color: black;
+    height: auto;
+    width: 8em;
+}
+
+.focail-large {
+    width: 7em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .badge {
@@ -61,7 +90,7 @@ a:active {
 }
 
 .icon {
-    height: 1.5em;
+    height: 1.25em;
     margin-top: 50%;
     user-select: none;
 }
@@ -73,8 +102,7 @@ a:active {
     background: hsl(209, 7%, 78%);
 }
 
-.play {
-    width: 9em;
+.button {
     height: 2.1em;
     background: black;
     border: none;
@@ -84,7 +112,25 @@ a:active {
     justify-content: center;
     color: white;
     cursor: pointer;
+}
+
+.button.play {
+    width: 9em;
     margin-top: 2em;
+}
+
+.button.share {
+    width: 13em;
+    margin-top: 1.5em;
+    display: grid;
+    grid-template-columns: repeat(3, 3em);
+    justify-items: center;
+    align-items: center;
+}
+
+.share-icon {
+    width: auto;
+    height: 1.25em;
 }
 
 h1 {
@@ -104,10 +150,6 @@ h3 {
     font-weight: bold;
     font-size: 1.35em;
     margin-bottom: -0.5em;
-}
-
-h4 {
-    margin-bottom: -.5em;
 }
 
 .box {
@@ -140,15 +182,24 @@ h4 {
     grid-column: span 2;
 }
 
+.statistic-data {
+    font-size: 1.25em;
+    margin-bottom: -.5em;
+}
+
+.statistic-label {
+    font-size: 1em;
+}
+
 .stats-grid {
     display: grid;
     justify-content: center;
     align-content: center;
     grid-template-columns: repeat(3, 6em);
-    grid-template-rows: repeat(2, 5em);
+    grid-template-rows: repeat(2, 4.25em);
     gap: .5em;
-    margin-bottom: .5em;
-    margin-top: .5em;
+    margin-bottom: 1em;
+    margin-top: -.5em;
 }
 
 .stat-bar-grid {

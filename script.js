@@ -5,6 +5,8 @@ let targetWords
 let targetWord
 fetchJSON()
 
+let lastPage
+
 const WORD_LENGTH = 5
 const FLIP_ANIMATION_DURATION = 500
 const DANCE_ANIMATION_DURATION = 500
@@ -31,7 +33,6 @@ async function fetchJSON() {
         const targetEntry = targetWords[Math.floor(dayOffset + 0) % targetWords.length];
         targetWord = targetEntry.word
 
-        startInteraction()
         showBadge(targetEntry.tag)
     } catch (error) {
         console.error('Error reading JSON file:', error);
@@ -243,4 +244,53 @@ function danceTiles(tiles) {
             }, { once: true })
         }, (index * DANCE_ANIMATION_DURATION) / 5)
     });
+}
+
+function showLast() {
+    showPage(lastPage)
+}
+
+function showPage(pageId) {
+    const oldPage = document.querySelector('.page.active').id
+
+    const pages = document.querySelectorAll('.page')
+    pages.forEach(page => {
+        page.classList.remove('active')
+    })
+    stopInteraction()
+
+    document.getElementById(pageId).classList.add('active')
+    if (pageId === "game") startInteraction()
+    else if (pageId === "stats") {
+        populateStatistics()
+        populateDistribution()
+    }
+    
+    lastPage = oldPage
+}
+
+function populateStatistics() {
+    const statistics = document.querySelectorAll('.statistic')
+
+    statistics.forEach((stat, index) => {
+        const data = stat.querySelector('.statistic-data')
+        const label = stat.querySelector('.statistic-label')
+
+        data.textContent = index
+        label.textContent = "Dummy statistic label"
+    })
+}
+
+function populateDistribution() {
+    const statBars = document.querySelectorAll('.stat-bar')
+    console.log(statBars.length)
+
+    statBars.forEach((bar, index) => {
+        bar.textContent = index
+
+        bar.style.width = 1 + ((index / 5) * 16) + "em"
+
+        if (index === 5) bar.classList.add('last')
+        else bar.classList.remove('last')
+    })
 }
