@@ -7,12 +7,12 @@ Notes on Implementation:
     If you need to update the target words list, this is read from the "Focail_Dictionary.csv" file, but requires the same format, and spellings of the headings provided.
 
 Needs:
-    We need several SVGs for specific icons found throughout: share-icon, stats-menu-button, info-menu-button
-    We need dictionaries that include all valid irish, and english words (this can be provided an any format you would like, we will update the parsing accordingly)
+    We need several SVGs for specific icons found throughout: share-icon, stats-menu-button, info-menu-button: MHIE to supply
+    We need dictionaries that include all valid irish, and english words (this can be provided an any format you would like, we will update the parsing accordingly) - Are the dictionaries supplied okay
 
 Questions: 
-    The stats menu can be navigated to from both the info page, and the game page, and there is an "X" to close it.  Should this menu send users back to the info page, or back to the last page they were on (this is how it is currently implemented)?
-    The HTML doc currently tracks the state of the game, and uses it to implement the share button, but also could use it to import state from outside. Are you going to track the game state for users, to prevent reloading to get more guesses?
-    When the user revisits the page after failing or completing a puzzle, are they allowed back onto the game screen, and if so do we need to sync the state with their last attempt?
-    When the user completes the level, where do we need to report the data so you can update your accounts?
-    Where is the cumulative data for the stats menu fetched from, and what format will it be sent in?
+    The stats menu can be navigated to from both the info page, and the game page, and there is an "X" to close it.  Should this menu send users back to the info page, or back to the last page they were on (this is how it is currently implemented)?: As is please
+    The HTML doc currently tracks the state of the game, and uses it to implement the share button, but also could use it to import state from outside. Are you going to track the game state for users, to prevent reloading to get more guesses? Yes please, can you arrange this?
+    When the user revisits the page after failing or completing a puzzle, are they allowed back onto the game screen, and if so do we need to sync the state with their last attempt? Yes they are. Can you mirror the NYT approach here. A message appears and says 'Failte, you've made x of 6 guesses! Keep going'
+    When the user completes the level, where do we need to report the data so you can update your accounts? - Can you advise what should happen here so that the stats page updates for each device?
+    Where is the cumulative data for the stats menu fetched from, and what format will it be sent in? - Can you advise the ideal scenario?
